@@ -2,7 +2,7 @@ class Debian < Operatingsystem
   PXEFILES = {:kernel => "linux", :initrd => "initrd.gz"}
 
   def pxedir
-    'dists/$release/main/installer-$arch/current/images/netboot/' + guess_os + '-installer/$arch'
+    'dists/$release/main/installer-$arch/current/images/' + netboot_dir + '/' + guess_os + '-installer/$arch'
   end
 
   def preseed_server(medium_provider)
@@ -53,6 +53,10 @@ class Debian < Operatingsystem
   # tries to guess if this an ubuntu or a debian os
   def guess_os
     (name =~ /ubuntu/i) ? "ubuntu" : "debian"
+  end
+
+  def netboot_dir
+    (os_parameters['netboot'] == 'hwe') ? "netboot-hwe" : "netboot"
   end
 
   def transform_vars(vars)
